@@ -2,12 +2,12 @@
 modules = [
   'templates',
 
-  'ngBoilerplate.home',
+  'Plate.home',
 
   'ui.router.state'
 ]
 
-appModule = angular.module 'ngBoilerplate', modules
+appModule = angular.module 'Plate', modules
 
 
 appConfig = ($stateProvider, $urlRouterProvider) ->
@@ -21,7 +21,7 @@ appController = ($scope, $location) ->
   $scope.$on '$stateChangeSuccess',
   (event, toState, toParams, fromState, fromParams) ->
     if angular.isDefined(toState.data.pageTitle)
-      $scope.pageTitle = toState.data.pageTitle + ' | ngBoilerplate'
+      $scope.pageTitle = toState.data.pageTitle + ' | Cookingenius'
 
 appController.$inject = ['$scope', '$location']
 appModule.controller 'AppCtrl', appController
