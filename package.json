@@ -1,8 +1,8 @@
 {
-  "author": "Vincent Prouillet",
-  "name": "ng-boilerplate",
-  "version": "1.0.0",
-  "homepage": "http://vincent.is",
+  "author": "Cookingenius",
+  "name": "Plate",
+  "version": "0.0.0",
+  "homepage": "http://www.cookingenius.com",
   "devDependencies": {
     "coffee-script": "~1.7.1",
     "karma": "~0.10.9",
