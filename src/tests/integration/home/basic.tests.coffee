@@ -11,9 +11,3 @@ describe "protractor library", ->
     expect(element).to.exist
     expect($).to.exist
     return
-
-  it "should wrap webdriver", ->
-    browser.get "index.html"
-    title = element By.id('title')
-    expect(title.getText()).to.eventually.equal 'Hello'
-    return
