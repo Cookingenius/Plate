@@ -12,8 +12,7 @@ $ git clone https://github.com/Cookingenius/Plate.git myproject
 $ git submodule init
 $ git submodule update
 $ sudo npm -g install gulp
-$ npm install
-$ bower install
+$ npm rebuild
 $ gulp --require coffee-script/register
 ```
 
