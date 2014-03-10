@@ -1,1 +1,45 @@
-<p>This is my recipe for {{ recipe.name }}</p>
+<div class="recipe m-box">
+
+  <div class="m-box--inner">
+
+    <h1>{{ recipe.name }}</h1>
+
+    <div class="tags">
+      <div ng-repeat="tag in recipe.tags" class="tag">{{ tag }}</div>
+    </div>
+
+    <div class="main-picture">
+      <img ng-src="{{ recipe.picture }}" alt="{{ recipe.name }}" />
+    </div>
+
+    <div>
+      Difficulty: {{ recipe.difficulty }} | Preparation time: {{ recipe.prepTime }}min | Cooking time: {{ recipe.cookingTime }}min
+    </div>
+
+    <div class="ingredients">
+      <h2>Ingredients</h2>
+      <div ng-repeat="ingredient in recipe.ingredients">
+        {{ ingredient.name }} - {{ ingredient.quantity }}
+      </div>
+    </div>
+
+    <div class="instructions">
+      <h2>Instructions</h2>
+
+      <div ng-repeat="step in recipe.instructions">
+        {{ $index + 1 }}
+        <hr/>
+        <img ng-src="{{ step.picture }}" /> {{ step.text }}
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="related m-box">
+  <div class="m-box--inner">
+  RELATED
+  </div>
+</div>
