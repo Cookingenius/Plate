@@ -9,3 +9,5 @@ module.exports = (config) ->
       'karma-phantomjs-launcher',
       'karma-chai-sinon'
     ]
+    preprocessors:
+      '**/*.coffee': ['coffee']
