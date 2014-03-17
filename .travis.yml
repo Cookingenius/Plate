@@ -9,7 +9,6 @@ before_install:
 install:
   - npm install -g bower gulp
   - npm rebuild
-  - ./node_modules/protractor/bin/webdriver-manager update
   - gulp build --require coffee-script/register
   - cd build && python -m SimpleHTTPServer 8001 > /dev/null 2>&1 &
 script:
