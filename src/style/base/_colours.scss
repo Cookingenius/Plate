@@ -1,0 +1,11 @@
+
+$page-bg-colour: #DBD9D7;
+
+$header-bg-colour: #352B28;
+$header-link-colour: white;
+
+$search-selected-bg-colour: #382822;
+$search-selected-link-colour: white;
+$search-results-hover-bg-colour: scale-color($search-selected-bg-colour, $lightness: 20%);
+$search-results-hover-link-colour: white;
+$search-results-border-colour: #ccc;

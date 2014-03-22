@@ -6,7 +6,40 @@
 @import "grid-settings";
 @import "snowflake/neat/neat";
 
-// Foundation style we want to include with overriden settings if necessary
-@import "foundation";
 
-// Import your app below
+// Base
+@import "base/foundation";
+@import "base/colours";
+@import "base/base";
+
+// Layout
+@import "layout/containers";
+
+// Modules
+@import "modules/box";
+
+// States
+
+
+
+// MOCKUP - to delete when doing it properly
+.tag {
+  padding: 10px;
+  border: 1px dotted black;
+  margin: 5px;
+  display: inline-block;
+}
+
+.main-picture {
+  img {
+    width: 100%;
+  }
+}
+
+.recipe {
+  @include span-columns(9);
+}
+
+.related {
+  @include span-columns(3);
+}
