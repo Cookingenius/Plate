@@ -1,0 +1,17 @@
+@import "colours";
+
+
+body {
+  background: $beige;
+  font-family: 'Source Sans Pro', sans-serif !important;
+}
+
+img {
+  // avoids margin at the bottom of a div with an img
+  vertical-align: middle;
+}
+
+// bitters remove every margin on titles
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: .67em;
+}

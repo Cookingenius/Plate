@@ -1,0 +1,21 @@
+
+@import "../base/colours";
+
+// http://thephuse.com/development/customizing-your-dashed-and-dotted-borders-in-css3/
+@mixin dashed-border($dashlength, $spacelength, $borderwidth, $color, $position: top) {
+  $per: percentage($dashlength / ($dashlength + $spacelength));
+  @include linear-gradient(to right, $color 0%, $color $per, rgba(0, 0, 0, 0) $per, $fallback: transparent);
+  background-position: 0 $position;
+  background-size: ($dashlength + $spacelength) $borderwidth;
+  background-repeat: repeat-x;
+}
+
+.orange-dashes {
+  @include dashed-border(12px, 6px, 2px, $orange-red);
+
+  content: "";
+  display: block;
+  height: 5px;
+  width: 100%;
+  margin: 1em 0;
+}

@@ -1,1 +1,66 @@
-<p>This is my recipe for {{ recipe.name }}</p>
+
+<div class="m-recipe-picture">
+  <img ng-src="{{ recipe.picture }}" alt="{{ recipe.name }}" />
+</div>
+
+<div class="m-recipe-description">
+  <h3>{{ recipe.subtitle }}</h3>
+  <p>{{ recipe.description }}</p>
+
+  <!-- TODO: make the time thing a directive that takes an integer (min) and renders the appropriate format -->
+  <div class="times">
+    <h4>Preparation time: <span class="time">{{ recipe.preparationTime }}'</span></h4>
+    <hr/>
+    <h4>Cooking time: <span class="time">{{ recipe.cookingTime }}'</span></h4>
+  </div>
+</div>
+
+<div class="m-recipe--container">
+  <div class="m-recipe-content">
+    <h1>{{ recipe.name }}</h1>
+
+    <span ng-repeat="tag in recipe.tags">
+      <a href="#" class="m-tag">{{ tag }}</a>
+    </span>
+
+    <div class="m-recipe-ingredients">
+      <h2>Ingredients ({{ recipe.numberServings }} servings)</h2>
+      <ul>
+        <li ng-repeat="ingredient in recipe.ingredients">
+          <span class="m-recipe-quantity">{{ ingredient.quantity }}</span> <span class="m-recipe-ingredient">{{ ingredient.name }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="orange-dashes"></div>
+
+    <div class="m-recipe-steps">
+      <h2>Step by step guide</h2>
+      <div class="m-recipe-step" ng-repeat="step in recipe.steps">
+        <div class="m-recipe-step-number">
+          <img ng-src="{{ step.picture }}" alt="" ng-if="step.picture"/>
+          <span class="m-number-square" ng-class="{'m-recipe-step-has-picture': step.picture}">{{ $index + 1 }}</span>
+        </div>
+        <p>{{ step.description }}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="m-recipe-sidebar">
+    <div class="m-recipe-macros">
+      My name is Inigo Montoya
+      <img src="http://placehold.it/320x180" alt=""/>
+    </div>
+
+    <div class="m-recipe-suggestions">
+      <h3>You might also like...</h3>
+
+      <div class="m-suggested-recipe" ng-repeat="suggestion in recipe.suggestions">
+        <span>{{ suggestion.name }}</span>
+        <img ng-src="{{ suggestion.picture }}" alt="" />
+      </div>
+
+    </div>
+  </div>
+</div>

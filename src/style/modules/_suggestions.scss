@@ -1,0 +1,25 @@
+@import "../base/colours";
+
+.m-suggested-recipe {
+  margin: 0 auto;
+  margin-bottom: 20px;
+  height: 215px;
+  width: 320px;
+
+  @include media($desktop) {
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  span {
+    display: inline-block;
+    color: white;
+    background: $green;
+    padding: 5px;
+    width: 100%;
+  }
+
+  img {
+    width: 100%;
+  }
+}
