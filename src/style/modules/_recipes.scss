@@ -1,0 +1,138 @@
+@import "../base/dimensions";
+@import "../base/colours";
+@import "../layout/classes";
+
+
+.m-recipe-picture {
+  @extend %large-two-third;
+  @extend %small-full-width;
+
+  img {
+    width: 100%;
+    height:  $recipe-top-height;
+  }
+}
+
+.m-recipe-description {
+  @extend %large-one-third;
+  @extend %small-full-width;
+
+  @include media($desktop) {
+    height: $recipe-top-height;
+  }
+
+  background-color: $darkish;
+  color: white;
+  padding: 20px;
+  font-size: .8em;
+  position: relative;
+
+  .times {
+   @include media($desktop) {
+      position: absolute;
+      bottom: 20px;
+      width: 85%;
+   }
+  }
+
+  .time {
+    color: $green;
+  }
+
+  hr {
+    border-color: $darkish-gray;
+    margin: 1em 0;
+  }
+}
+
+.m-recipe--container {
+  background: white;
+  display: table;
+  width: 100%;
+}
+
+.m-recipe-content {
+  @extend %large-two-third;
+  @extend %small-full-width;
+
+  background: white;
+  padding: 20px;
+  font-size: .9em;
+}
+
+.m-recipe-sidebar {
+  background: white;
+  @extend %large-one-third;
+  @extend %small-full-width;
+}
+
+
+%recipe-orange-title {
+  font-size: 1.5em;
+  color: $orange-red;
+  margin-bottom: .4em;
+}
+
+.m-recipe-ingredients {
+  h2 {
+    @extend %recipe-orange-title;
+  }
+
+  margin-top: 1em;
+
+  ul {
+    padding: 0;
+    margin: 0;
+
+    li {
+      list-style-type: none;
+    }
+  }
+
+  .m-recipe-quantity {
+    color: $orange-red;
+  }
+}
+
+.m-recipe-steps {
+  h2 {
+    @extend %recipe-orange-title;
+  }
+
+  .m-recipe-step {
+    margin-top: 20px;
+
+    p {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .m-recipe-step-number {
+      position: relative;
+      display: inline-block;
+      margin-right: 20px;
+
+       .m-recipe-step-has-picture {
+         position: absolute;
+         top: 0;
+       }
+    }
+  }
+}
+
+.m-recipe-sidebar {
+  background: white;
+}
+
+.m-recipe-macros {
+  background: $light-gray;
+  padding: 20px;
+}
+
+.m-recipe-suggestions {
+  padding: 20px;
+
+  h3 {
+    font-size: 1.4em;
+  }
+}

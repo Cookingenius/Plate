@@ -1,0 +1,11 @@
+@import "../base/colours";
+
+.m-number-square {
+  width: 40px;
+  height: 40px;
+  background-color: $darkish;
+  color: white;
+  line-height: 2.5em;
+  text-align: center;
+  display: inline-block;
+}

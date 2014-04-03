@@ -1,0 +1,27 @@
+
+// silent classes
+
+%large-one-third {
+  @include media($desktop) {
+    @include span-columns(4);
+  }
+}
+
+%large-two-third {
+  @include media($desktop) {
+    @include span-columns(8);
+  }
+}
+
+%small-full-width {
+   @include media($mobile) {
+      @include span-columns(4);
+   }
+   @include media($tablet) {
+      @include span-columns(8);
+   }
+}
+
+%no-margin {
+  @include omega;
+}
