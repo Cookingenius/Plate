@@ -1,32 +1,32 @@
 
 <div class="m-recipe-picture">
-  <img ng-src="{{ recipe.picture }}" alt="{{ recipe.name }}" />
+  <img ng-src="{{ vm.recipe.picture }}" alt="{{ vm.recipe.name }}" />
 </div>
 
 <div class="m-recipe-description">
-  <h3>{{ recipe.subtitle }}</h3>
-  <p>{{ recipe.description }}</p>
+  <h3>{{ vm.vm.recipe.subtitle }}</h3>
+  <p>{{ vm.recipe.description }}</p>
 
   <!-- TODO: make the time thing a directive that takes an integer (min) and renders the appropriate format -->
   <div class="times">
-    <h4>Preparation time: <span class="time">{{ recipe.preparationTime }}'</span></h4>
+    <h4>Preparation time: <span class="time">{{ vm.recipe.preparationTime }}'</span></h4>
     <hr/>
-    <h4>Cooking time: <span class="time">{{ recipe.cookingTime }}'</span></h4>
+    <h4>Cooking time: <span class="time">{{ vm.recipe.cookingTime }}'</span></h4>
   </div>
 </div>
 
 <div class="m-recipe--container">
   <div class="m-recipe-content">
-    <h1>{{ recipe.name }}</h1>
+    <h1>{{ vm.recipe.name }}</h1>
 
-    <span ng-repeat="tag in recipe.tags">
+    <span ng-repeat="tag in vm.recipe.tags">
       <a href="#" class="m-tag">{{ tag }}</a>
     </span>
 
     <div class="m-recipe-ingredients">
-      <h2>Ingredients ({{ recipe.numberServings }} servings)</h2>
+      <h2>Ingredients ({{ vm.recipe.numberServings }} servings)</h2>
       <ul>
-        <li ng-repeat="ingredient in recipe.ingredients">
+        <li ng-repeat="ingredient in vm.recipe.ingredients">
           <span class="m-recipe-quantity">{{ ingredient.quantity }}</span> <span class="m-recipe-ingredient">{{ ingredient.name }}</span>
         </li>
       </ul>
@@ -36,7 +36,7 @@
 
     <div class="m-recipe-steps">
       <h2>Step by step guide</h2>
-      <div class="m-recipe-step" ng-repeat="step in recipe.steps">
+      <div class="m-recipe-step" ng-repeat="step in vm.recipe.steps">
         <div class="m-recipe-step-number">
           <img ng-src="{{ step.picture }}" alt="" ng-if="step.picture"/>
           <span class="m-number-square" ng-class="{'m-recipe-step-has-picture': step.picture}">{{ $index + 1 }}</span>
@@ -56,7 +56,7 @@
     <div class="m-recipe-suggestions">
       <h3>You might also like...</h3>
 
-      <div class="m-suggested-recipe" ng-repeat="suggestion in recipe.suggestions">
+      <div class="m-suggested-recipe" ng-repeat="suggestion in vm.recipe.suggestions">
         <span>{{ suggestion.name }}</span>
         <img ng-src="{{ suggestion.picture }}" alt="" />
       </div>

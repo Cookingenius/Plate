@@ -1,4 +1,3 @@
-require('coffee-script').register();
 
 exports.config = {
   // The file path to the selenium server jar.
@@ -7,7 +6,7 @@ exports.config = {
   capabilities: {
     browserName: 'firefox'
   },
-  specs: ['src/tests/integration/**/*.coffee'],
+  specs: ['src/tests/integration/**/*.js'],
   baseUrl: 'http://localhost:8001',
   framework: 'mocha',
   mochaOpts: {
