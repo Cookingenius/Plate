@@ -1,12 +1,12 @@
 /// <reference path="../libs/angular.d.ts"/>
 
-module app {
+declare module app {
 
-  export interface IRootScope extends ng.IScope {
+  interface IRootScope extends ng.IScope {
     pageTitle: string;
   }
 
-  export interface IScope extends ng.IScope {
+  interface IScope extends ng.IScope {
     vm: any;
   }
 

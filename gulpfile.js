@@ -32,8 +32,18 @@ destinations = {
 };
 
 libs = {
-  dev: ['libs/angular/angular.js', 'libs/angular-ui-router/release/angular-ui-router.js'],
-  dist: ['libs/angular/angular.min.js', 'libs/angular-ui-router/release/angular-ui-router.min.js']
+  dev: [
+      'libs/angular/angular.js',
+      'libs/angular-ui-router/release/angular-ui-router.js',
+      'libs/lodash/dist/lodash.js',
+      'libs/restangular/dist/restangular.js',
+  ],
+  dist: [
+      'libs/angular/angular.min.js',
+      'libs/angular-ui-router/release/angular-ui-router.min.js',
+       'libs/lodash/dist/lodash.min.js',
+      'libs/restangular/dist/restangular.min.js',
+  ]
 };
 
 testFiles = libs.dev;
@@ -45,6 +55,8 @@ testFiles = testFiles.concat(
 injectPaths = [
     "" + destinations.libs + "/angular." + (isDist ? 'min.' : '') + "js",
     "" + destinations.libs + "/angular-ui-router." + (isDist ? 'min.' : '') + "js",
+    "" + destinations.libs + "/lodash." + (isDist ? 'min.' : '') + "js",
+    "" + destinations.libs + "/restangular." + (isDist ? 'min.' : '') + "js",
     "" + destinations.js + "/app/**/*.js",
     "" + destinations.js + "/templates.js",
     "" + destinations.css + "/*.css"
@@ -97,22 +109,39 @@ gulp.task('index', function() {
   })).pipe(gulp.dest(destinations.index));
 });
 
+var karma = require('gulp-karma')({
+  configFile: 'karma.conf.js'
+});
+
 gulp.task('karma', function() {
-  return gulp.src(testFiles).pipe($.karma({
-    configFile: 'karma.conf.js',
-    action: 'run'
-  })).on('error', function(err) {
-    console.log(err);
-    throw err;
+  return karma.once().catch(function (error) {
+    throw new gutil.PluginError('karma', 'hello');
   });
 });
 
 gulp.task('test-continuous', function() {
-  return gulp.src(testFiles).pipe($.karma({
-    configFile: 'karma.conf.js',
-    action: 'watch'
-  }));
+  // Start a karma server, run tests, then watch with karma
+  return karma.start({
+    autoWatch: true
+  });
 });
+
+//gulp.task('karma', function() {
+//  return gulp.src(testFiles).pipe($.debug()).pipe($.karma({
+//    configFile: 'karma.conf.js',
+//    action: 'run'
+//  })).on('error', function(err) {
+//    console.log(err);
+//    throw err;
+//  });
+//});
+
+//gulp.task('test-continuous', function() {
+//  return gulp.src(testFiles).pipe($.karma({
+//    configFile: 'karma.conf.js',
+//    action: 'watch'
+//  }));
+//});
 
 gulp.task('webdriver_update', webdriver_update);
 
@@ -142,7 +171,7 @@ gulp.task('browser-sync', function() {
 });
 
 gulp.task('default', ['build'], function() {
-  return runSequence('browser-sync', ['watch', 'test-continuous']);
+  return runSequence(['watch', 'test-continuous']);
 });
 
 gulp.task('build', function() {

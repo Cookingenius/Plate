@@ -5,17 +5,23 @@ var modules = [
 
   "Plate.recipes",
 
-  "ui.router.state"
+  "ui.router.state",
+  "restangular"
 ];
 
-var appModule = angular.module("Plate", modules);
+var cookingGenius = angular.module("Plate", modules);
 
-var appConfig = function($urlRouterProvider: ng.ui.IUrlRouterProvider) {
-    $urlRouterProvider.otherwise("/recipes/sushi");
+var appConfig = function(
+  $urlRouterProvider: ng.ui.IUrlRouterProvider,
+  RestangularProvider: restangular.IProvider
+  ) {
+    $urlRouterProvider.otherwise("/recipes/1");
+    RestangularProvider.setBaseUrl("http://localhost:8000");
+    RestangularProvider.setRequestSuffix("/");
 };
 
-appConfig.$inject = ["$urlRouterProvider"];
-appModule.config(appConfig);
+appConfig.$inject = ["$urlRouterProvider", "RestangularProvider"];
+cookingGenius.config(appConfig);
 
 
 var appController = function($scope: ng.IScope, $rootScope: app.IRootScope) {
@@ -27,4 +33,4 @@ var appController = function($scope: ng.IScope, $rootScope: app.IRootScope) {
 };
 
 appController.$inject = ["$scope", "$rootScope"];
-appModule.controller(appController);
+cookingGenius.controller(appController);

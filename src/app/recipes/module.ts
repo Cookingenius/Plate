@@ -2,6 +2,7 @@
 
 var modules = [
   "recipes.details",
+  "recipes.service",
 
   "ui.router.state"
 ];
