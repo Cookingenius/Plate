@@ -1,7 +1,18 @@
 /// <reference path="../libs/angular.d.ts"/>
+/// <reference path="../libs/restangular.d.ts"/>
 
-module recipes {
-  export interface IDetailsController {
-    recipe : any;
+
+/// <reference path="../api/recipe.ts"/>
+
+declare module recipes {
+  interface IDetailsController {
+    recipe : api.IRecipe;
   }
+
+  interface IRecipeService {
+    rest: restangular.IService;
+
+    getById(number): restangular.IPromise<api.IRecipe>;
+  }
+
 }

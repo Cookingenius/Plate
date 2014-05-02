@@ -14,6 +14,9 @@ module.exports = function(config) {
         'libs/angular/angular.js',
         'libs/angular-ui-router/release/angular-ui-router.js',
         'libs/angular-mocks/angular-mocks.js',
+        'libs/lodash/dist/lodash.js',
+        'libs/restangular/dist/restangular.js',
+        'libs/angular-mocks/angular-mocks.js',
         'build/src/templates.js',
         'src/**/*.js'
     ],

@@ -1,17 +1,17 @@
 
 <div class="m-recipe-picture">
-  <img ng-src="{{ vm.recipe.picture }}" alt="{{ vm.recipe.name }}" />
+  <img ng-src="{{ vm.recipe.picture.0.url }}" alt="{{ vm.recipe.name }}" />
 </div>
 
 <div class="m-recipe-description">
-  <h3>{{ vm.vm.recipe.subtitle }}</h3>
+  <h3>{{ vm.recipe.subtitle }}</h3>
   <p>{{ vm.recipe.description }}</p>
 
   <!-- TODO: make the time thing a directive that takes an integer (min) and renders the appropriate format -->
   <div class="times">
-    <h4>Preparation time: <span class="time">{{ vm.recipe.preparationTime }}'</span></h4>
+    <h4>Preparation time: <span class="time">{{ vm.recipe.preparation_time }}'</span></h4>
     <hr/>
-    <h4>Cooking time: <span class="time">{{ vm.recipe.cookingTime }}'</span></h4>
+    <h4>Cooking time: <span class="time">{{ vm.recipe.cooking_time }}'</span></h4>
   </div>
 </div>
 
@@ -24,10 +24,10 @@
     </span>
 
     <div class="m-recipe-ingredients">
-      <h2>Ingredients ({{ vm.recipe.numberServings }} servings)</h2>
+      <h2>Ingredients ({{ vm.recipe.number_servings }} servings)</h2>
       <ul>
         <li ng-repeat="ingredient in vm.recipe.ingredients">
-          <span class="m-recipe-quantity">{{ ingredient.quantity }}</span> <span class="m-recipe-ingredient">{{ ingredient.name }}</span>
+          <span class="m-recipe-quantity">{{ ingredient.quantity }}</span> <span class="m-recipe-ingredient">{{ ingredient.food.name }}</span>
         </li>
       </ul>
     </div>
@@ -38,10 +38,10 @@
       <h2>Step by step guide</h2>
       <div class="m-recipe-step" ng-repeat="step in vm.recipe.steps">
         <div class="m-recipe-step-number">
-          <img ng-src="{{ step.picture }}" alt="" ng-if="step.picture"/>
-          <span class="m-number-square" ng-class="{'m-recipe-step-has-picture': step.picture}">{{ $index + 1 }}</span>
+          <img ng-src="{{ step.picture.0.url }}" alt="" ng-if="step.picture.0"/>
+          <span class="m-number-square" ng-class="{'m-recipe-step-has-picture': step.picture.0}">{{ $index + 1 }}</span>
         </div>
-        <p>{{ step.description }}</p>
+        <p>{{ step.text }}</p>
       </div>
     </div>
 

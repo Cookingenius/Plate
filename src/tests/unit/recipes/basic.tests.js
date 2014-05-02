@@ -1,4 +1,4 @@
-describe('Unit: Home module', function() {
+describe('Unit: recipe module', function() {
 
   beforeEach(module('Plate.recipes'));
 

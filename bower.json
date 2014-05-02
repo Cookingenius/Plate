@@ -4,6 +4,7 @@
   "devDependencies": {
     "angular": "1.2.13",
     "angular-mocks": "1.2.13",
-    "angular-ui-router": "0.2.8-bowratic-tedium"
+    "angular-ui-router": "0.2.8-bowratic-tedium",
+    "restangular": "~1.3.1"
   }
 }
