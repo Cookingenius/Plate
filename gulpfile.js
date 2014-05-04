@@ -1,58 +1,50 @@
-var $, browserSync, destinations, distFolderName, gulp, gutil, injectPaths, isDist, libs, protractor, runSequence, sass, sources, testFiles, webdriver_update;
+var gulp = require('gulp');
+var plugins = require('gulp-load-plugins')();
+plugins.sass = require('gulp-ruby-sass');
 
-gulp = require('gulp');
-gutil = require('gulp-util');
-$ = require('gulp-load-plugins')();
-sass = require('gulp-ruby-sass');
-runSequence = require('run-sequence');
-protractor = require('gulp-protractor').protractor;
-webdriver_update = require('gulp-protractor').webdriver_update;
-browserSync = require('browser-sync');
+var runSequence = require('run-sequence');
+var browserSync = require('browser-sync');
 
-isDist = gutil.env.type === 'dist';
 
-sources = {
-  sass: 'src/style/**/*.scss',
-  code: 'src/app/**/*.ts',
-  app: ['src/**/*.ts', '!src/**/*.tests.js'],
-  templates: 'src/templates/**/*.html',
-  index: 'src/index.html',
-  integration: 'src/tests/integration/**/*.js',
-  assets: ['src/assets/**/*.png', 'src/assets/**/*.jpg']
+// VARIABLES ======================================================
+var isDist = plugins.util.env.type === 'dist';
+var outputFolder = isDist ? 'dist' : 'build';
+
+var globs = {
+    sass: 'src/style/**/*.scss',
+    templates: 'src/templates/**/*.html',
+    assets: 'src/assets/**/*.*',
+    app: 'src/app/**/*.ts',
+    appWithDefinitions: 'src/**/*.ts',
+    integration: 'src/tests/integration/**/*.js',
+    index: 'src/index.html'
 };
 
-distFolderName = isDist ? 'dist' : 'build';
-
-destinations = {
-  css: "" + distFolderName + "/style",
-  assets: "" + distFolderName + "/assets",
-  js: "" + distFolderName + "/src",
-  libs: "" + distFolderName + "/libs",
-  index: "" + distFolderName
+var destinations = {
+    css: "" + outputFolder + "/style",
+    js: "" + outputFolder + "/src",
+    libs: "" + outputFolder + "/vendor",
+    assets: "" + outputFolder + "/assets",
+    index: "" + outputFolder
 };
 
-libs = {
-  dev: [
-      'libs/angular/angular.js',
-      'libs/angular-ui-router/release/angular-ui-router.js',
-      'libs/lodash/dist/lodash.js',
-      'libs/restangular/dist/restangular.js',
-  ],
-  dist: [
-      'libs/angular/angular.min.js',
-      'libs/angular-ui-router/release/angular-ui-router.min.js',
-       'libs/lodash/dist/lodash.min.js',
-      'libs/restangular/dist/restangular.min.js',
-  ]
+// find a better way to handle 3rd party vendor than that
+var vendor = {
+    dev: [
+        'vendor/angular/angular.js',
+        'vendor/angular-ui-router/release/angular-ui-router.js',
+        'vendor/lodash/dist/lodash.js',
+        'vendor/restangular/dist/restangular.js',
+    ],
+    dist: [
+        'vendor/angular/angular.min.js',
+        'vendor/angular-ui-router/release/angular-ui-router.min.js',
+        'vendor/lodash/dist/lodash.min.js',
+        'vendor/restangular/dist/restangular.min.js',
+    ]
 };
 
-testFiles = libs.dev;
-
-testFiles = testFiles.concat(
-    ['libs/angular-mocks/angular-mocks.js', 'build/src/templates.js', 'src/app/**/*.ts', 'src/tests/unit/**/*.js','!src/tests/integration/**/*.js'])
-;
-
-injectPaths = [
+var injectPaths = [
     "" + destinations.libs + "/angular." + (isDist ? 'min.' : '') + "js",
     "" + destinations.libs + "/angular-ui-router." + (isDist ? 'min.' : '') + "js",
     "" + destinations.libs + "/lodash." + (isDist ? 'min.' : '') + "js",
@@ -62,126 +54,109 @@ injectPaths = [
     "" + destinations.css + "/*.css"
 ];
 
-gulp.task('style', function() {
-  return gulp.src(sources.sass).pipe(sass({
-    style: 'nested'
-  })).pipe(gulp.dest(destinations.css));
-});
-
-gulp.task('lint', function() {
-     return gulp.src(sources.code)
-        .pipe($.tslint())
-        .pipe($.tslint.report('prose', {
-          emitError: true
-        }));
-});
-
-gulp.task('typescript', function() {
-  return gulp.src(sources.app).pipe($.tsc({
-    emitError: false
-  })).pipe(gulp.dest(destinations.js));
-});
-
-gulp.task('templates', function() {
-  return gulp.src(sources.templates).pipe($.minifyHtml({
-    empty: true,
-    spare: true,
-    quotes: true
-  })).pipe($.ngHtml2js({
-    moduleName: 'templates'
-  })).pipe($.concat('templates.js')).pipe(isDist ? $.uglify() : gutil.noop()).pipe(gulp.dest(destinations.js));
-});
-
-gulp.task('libs', function() {
-  return gulp.src(isDist ? libs.dist : libs.dev).pipe(gulp.dest(destinations.libs));
-});
-
-gulp.task('assets', function() {
-  return gulp.src(sources.assets).pipe(gulp.dest(destinations.assets));
-});
-
-gulp.task('index', function() {
-  return gulp.src(injectPaths, {
-    read: false
-  }).pipe($.inject(sources.index, {
-    ignorePath: distFolderName,
-    addRootSlash: false
-  })).pipe(gulp.dest(destinations.index));
-});
-
 var karma = require('gulp-karma')({
-  configFile: 'karma.conf.js'
+    configFile: 'karma.conf.js'
 });
 
-gulp.task('karma', function() {
-  return karma.once().catch(function (error) {
-    throw new gutil.PluginError('karma', 'hello');
-  });
+// TASKS ===========================================================
+
+gulp.task('sass', function () {
+    return gulp.src(globs.sass)
+        .pipe(plugins.sass({style: isDist ? 'compressed' : 'nested'}))
+        .pipe(gulp.dest(destinations.css))
+        .pipe(browserSync.reload({stream: true, once: true}));
 });
 
-gulp.task('test-continuous', function() {
-  // Start a karma server, run tests, then watch with karma
-  return karma.start({
-    autoWatch: true
-  });
+gulp.task('ts-lint', function () {
+    return gulp.src(globs.app)
+        .pipe(plugins.tslint())
+        .pipe(plugins.tslint.report('prose', {emitError: true}));
 });
 
-//gulp.task('karma', function() {
-//  return gulp.src(testFiles).pipe($.debug()).pipe($.karma({
-//    configFile: 'karma.conf.js',
-//    action: 'run'
-//  })).on('error', function(err) {
-//    console.log(err);
-//    throw err;
-//  });
-//});
-
-//gulp.task('test-continuous', function() {
-//  return gulp.src(testFiles).pipe($.karma({
-//    configFile: 'karma.conf.js',
-//    action: 'watch'
-//  }));
-//});
-
-gulp.task('webdriver_update', webdriver_update);
-
-gulp.task('protractor', ['webdriver_update'], function() {
-  return gulp.src(sources.integration).pipe(protractor({
-    configFile: 'protractor.conf.js'
-  })).on('error', function(e) {
-    throw e;
-  });
+gulp.task('ts-compile', function () {
+    return gulp.src(globs.appWithDefinitions)
+        .pipe(plugins.tsc({emitError: false}))
+        .pipe(isDist ? plugins.concat('app.js') : plugins.util.noop())
+        .pipe(isDist ? plugins.uglify() : plugins.util.noop())
+        .pipe(gulp.dest(destinations.js));
 });
 
-gulp.task('ci', ['karma', 'protractor']);
-
-gulp.task('clean', function() {
-  return gulp.src(['dist/', 'build/'], {
-    read: false
-  }).pipe($.clean());
+gulp.task('templates', function () {
+    return gulp.src(globs.templates)
+        .pipe(plugins.minifyHtml({
+            empty: true,
+            spare: true,
+            quotes: true
+        }))
+        .pipe(plugins.ngHtml2js({moduleName: 'templates'}))
+        .pipe(plugins.concat('templates.js'))
+        .pipe(isDist ? plugins.uglify() : plugins.util.noop())
+        .pipe(gulp.dest(destinations.js))
+        .pipe(browserSync.reload({stream: true, once: true}));
 });
 
-gulp.task('browser-sync', function() {
-  return browserSync.init(['build/*.html', 'build/**/*.js', 'build/style/*.css'], {
-    server: {
-      baseDir: './build'
-    },
-    open: false
-  });
+gulp.task('clean', function () {
+    return gulp.src(['dist/', 'build/'], {read: false})
+        .pipe(plugins.clean());
 });
 
-gulp.task('default', ['build'], function() {
-  return runSequence(['watch', 'test-continuous']);
+gulp.task('karma-once', function () {
+    return karma.once();
 });
 
-gulp.task('build', function() {
-  return runSequence('clean', ['style', 'assets', 'typescript', 'templates', 'libs'], 'index');
+gulp.task('karma-watch', function () {
+    return karma.start({autoWatch: true});
 });
 
-gulp.task('watch', function() {
-  gulp.watch(sources.sass, ['style']);
-  gulp.watch(sources.app, ['lint', 'typescript']);
-  gulp.watch(sources.templates, ['templates']);
-  gulp.watch(sources.index, ['index']);
-  return gulp.watch(sources.assets, ['assets']);
+gulp.task('webdriver_update', plugins.protractor.webdriver_update);
+
+gulp.task('protractor', ['webdriver_update'], function () {
+    return gulp.src(globs.integration)
+        .pipe(plugins.protractor.protractor({configFile: 'protractor.conf.js'}));
+});
+
+gulp.task('browser-sync', function () {
+    browserSync.init(null, {
+        server: {baseDir: "./build"},
+        open: false
+    });
+});
+
+gulp.task('copy-vendor', function () {
+    return gulp.src(isDist ? vendor.dist : vendor.dev)
+        .pipe(gulp.dest(destinations.libs));
+});
+
+gulp.task('copy-assets', function () {
+    return gulp.src(globs.assets)
+        .pipe(gulp.dest(destinations.assets));
+});
+
+gulp.task('index', function () {
+    return gulp.src(injectPaths, {read: false})
+        .pipe(plugins.inject(globs.index, {
+            ignorePath: outputFolder,
+            addRootSlash: false
+        }))
+        .pipe(gulp.dest(destinations.index));
+});
+
+gulp.task('watch', function () {
+    gulp.watch(globs.sass, ['sass']);
+    gulp.watch(globs.appWithDefinitions, ['ts-lint', 'ts-compile']);
+    gulp.watch(globs.templates, ['templates']);
+    gulp.watch(globs.index, ['index']);
+    gulp.watch(globs.assets, ['copy-assets']);
+});
+
+gulp.task('build', function () {
+    return runSequence(
+        'clean',
+        ['sass', 'copy-assets', 'ts-compile', 'templates', 'copy-vendor'],
+        'index'
+    );
+});
+
+gulp.task('default', ['browser-sync', 'build'], function () {
+    return runSequence(['watch', 'karma-watch']);
 });
