@@ -1,29 +1,28 @@
-module.exports = function(config) {
+module.exports = function (config) {
 
-  config.set({
-    frameworks: ['mocha', 'chai-sinon'],
-    browsers: ['Firefox'],
-    plugins: [
-        'karma-mocha',
-        'karma-firefox-launcher',
-        'karma-typescript-preprocessor',
-        'karma-phantomjs-launcher',
-        'karma-chai-sinon'
-    ],
-    files: [
-        'libs/angular/angular.js',
-        'libs/angular-ui-router/release/angular-ui-router.js',
-        'libs/angular-mocks/angular-mocks.js',
-        'libs/lodash/dist/lodash.js',
-        'libs/restangular/dist/restangular.js',
-        'libs/angular-mocks/angular-mocks.js',
-        'build/src/templates.js',
-        'src/**/*.js'
-    ],
-    exclude: ['src/tests/integration/**/*.js'],
-    preprocessors: {
-      '**/*.ts': ['typescript']
-    }
-  });
+    config.set({
+        frameworks: ['mocha', 'chai-sinon'],
+        browsers: ['PhantomJS'],
+        plugins: [
+            'karma-mocha',
+            'karma-typescript-preprocessor',
+            'karma-phantomjs-launcher',
+            'karma-chai-sinon'
+        ],
+        files: [
+            'vendor/angular/angular.js',
+            'vendor/angular-ui-router/release/angular-ui-router.js',
+            'vendor/angular-mocks/angular-mocks.js',
+            'vendor/lodash/dist/lodash.js',
+            'vendor/restangular/dist/restangular.js',
+            'build/src/templates.js',
+            'src/app/**/*.ts',
+            'src/tests/unit/**/*.js',
+        ],
+        exclude: ['src/tests/integration/**/*.js'],
+        preprocessors: {
+            '**/*.ts': ['typescript']
+        }
+    });
 
 };
